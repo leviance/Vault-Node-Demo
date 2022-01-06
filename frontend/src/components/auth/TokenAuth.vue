@@ -37,7 +37,6 @@ export default defineComponent({
 
     data() {
         return {
-            test: 1
         }
     },
 
@@ -75,9 +74,6 @@ export default defineComponent({
     },
 
      methods: {
-        increment() {
-            console.log(this.test++);
-        }
     }
 });
 </script>

@@ -24,7 +24,42 @@ class Vault {
                     return resolve(res.data);
                 })
                 .catch(err => {
-                    return reject(err);
+                    return reject(err.response);
+                })
+        })
+    }
+
+
+    /**
+     * @param {String} token 
+     * @param {String} path 
+     * @returns {Object}
+     */
+    async enableAppRole(token, path) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${this.#vaultURL}/sys/auth/${path}`, {type: "approle"}, { headers: {"X-Vault-Token": token}})
+                .then(res => {
+                    return resolve(res.data);
+                })
+                .catch(err => {
+                    return reject(err.response);
+                })
+        })
+    }
+
+
+    /**
+     * @param {String} token 
+     * @returns {Object}
+     */
+    async getAuthMethods(token) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${this.#vaultURL}/sys/auth`, { headers: {"X-Vault-Token": token}})
+                .then(res => {
+                    return resolve(res.data);
+                })
+                .catch(err => {
+                    return reject(err.response);
                 })
         })
     }

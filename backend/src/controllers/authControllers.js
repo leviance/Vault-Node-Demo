@@ -17,7 +17,7 @@ class AuthController {
             }
             
 
-            req.session.user_data = {
+            req.session.userData = {
                 token,
                 policies
             }
@@ -30,7 +30,7 @@ class AuthController {
     }
 
     checkLogin(req, res) {
-        if(req.session.user_data?.token)
+        if(req.session.userData?.token)
         {
             return res.status(204).send();
         }
@@ -39,7 +39,7 @@ class AuthController {
     }
 
     checkLogout(req, res) {
-        if(!req.session.user_data?.token)
+        if(!req.session.userData?.token)
         {
             return res.status(204).send();
         }
