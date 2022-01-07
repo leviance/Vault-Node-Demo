@@ -33,5 +33,7 @@ npm start.
     -   result: String
 -   `[GET] /auth-methods`: return list auth methods
     -   result: Object
+-   `[DELETE] /auth-methods/:path` delete path send to server
+
 
 

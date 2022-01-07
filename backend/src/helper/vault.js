@@ -12,11 +12,6 @@ class Vault {
         this.#vaultURL = `${this.#endpoint}/${this.#appVersion}`;
     }
     
-
-    /**
-     * @param {String} token 
-     * @returns {object}
-     */
     async tokenLookUp(token) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.#vaultURL}/auth/token/lookup-self`, { headers: {"X-Vault-Token": token}})
@@ -29,12 +24,6 @@ class Vault {
         })
     }
 
-
-    /**
-     * @param {String} token 
-     * @param {String} path 
-     * @returns {Object}
-     */
     async enableAppRole(token, path) {
         return new Promise((resolve, reject) => {
             axios.post(`${this.#vaultURL}/sys/auth/${path}`, {type: "approle"}, { headers: {"X-Vault-Token": token}})
@@ -47,11 +36,6 @@ class Vault {
         })
     }
 
-
-    /**
-     * @param {String} token 
-     * @returns {Object}
-     */
     async getAuthMethods(token) {
         return new Promise((resolve, reject) => {
             axios.get(`${this.#vaultURL}/sys/auth`, { headers: {"X-Vault-Token": token}})
@@ -62,6 +46,38 @@ class Vault {
                     return reject(err.response);
                 })
         })
+    }
+
+    async disableAuthMethod(token, path) {
+        return new Promise((resolve, reject) => {
+            axios.delete(`${this.#vaultURL}/sys/auth/${path}`, { headers: {"X-Vault-Token": token}})
+                .then(res => {
+                    return resolve(res.data);
+                })
+                .catch(err => {
+                    return reject(err.response);
+                })
+        })
+    }
+
+    async createSecret(token, path) {
+        return new Promise((resolve, reject) => {
+            axios.put(
+                    `http://localhost:8200/v1/database/data/backend/lee`, 
+                    {data: {bar: "b", foo: "a", t: "123"}}, 
+                    { headers: {"X-Vault-Token": "root"}}
+                )
+                .then(res => {
+                    return resolve(res.data);
+                })
+                .catch(err => {
+                    return reject(err.response);
+                })
+        })
+    }
+
+    async updateSecret(token, path) {
+        return this.createSecret(token, path);
     }
 }
 

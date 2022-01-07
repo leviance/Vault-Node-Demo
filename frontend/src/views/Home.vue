@@ -1,6 +1,7 @@
 <template>
 	<div class="home-page">
 		<NavLeft />
+		<ContentRight />
 	</div>
 </template>
 
@@ -9,7 +10,8 @@ import {defineAsyncComponent} from "vue";
 
 export default {
 	components: { 
-		NavLeft: defineAsyncComponent(() => import("@/components/home/NavLeft.vue"))
+		NavLeft: defineAsyncComponent(() => import("@/components/home/NavLeft.vue")),
+		ContentRight: defineAsyncComponent(() => import("@/components/home/ContentRight.vue"))
 	},
 
 	data() {
@@ -26,6 +28,10 @@ export default {
 
 <style lang="scss">
 .home-page {
-	height: 100%;
+	display: grid;
+    height: 100%;
+    width: 100%;
+    grid-auto-flow: column;
+	grid-template-columns: max-content;
 }
 </style>

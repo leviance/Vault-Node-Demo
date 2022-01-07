@@ -3,6 +3,7 @@ module.exports.serverError = {
 }
 
 module.exports.clientError = {
+    authMethodCantDisable: (path) => `${path} không thể bị xóa.`,
     bad_request: "Yêu cầu không hợp lệ!",
     permissionDenied: "Quyền truy cập bị từ chối!"
 }

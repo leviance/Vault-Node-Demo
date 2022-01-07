@@ -1,20 +1,26 @@
 import { createStore } from 'vuex';
-import defaultState from "./state";
+import defaultState from "./mainState";
 import {notification} from "ant-design-vue";
+
+/**
+ * module
+ */
+import authNav from "./modules/authNav";
+
 
 export default createStore({
 	state: JSON.parse(JSON.stringify(defaultState)),
 
 	mutations: {
-		reset_sate(state) {
-			Object.assign(state, JSON.parse(JSON.stringify(default_sate)));
+		resetState(state) {
+			Object.assign(state, JSON.parse(JSON.stringify(defaultState)));
 		},
 	  
-		show_loading(state) {
+		showLoading(state) {
 			state.loading_modal = true;
 		},
 	  
-		hide_loading(state) {
+		hideLoading(state) {
 			state.loading_modal = false;
 		},
 	},
@@ -53,10 +59,10 @@ export default createStore({
 					description: "Hãy kiểm tra lại kết nối mạng của bạn, hoặc thử F5 để tải lại trang. Nếu vấn đề này còn tiếp tục vui lòng liên hệ bộ phận hỗ trợ!",
 				});
 			}
-		}
+		},
 	},
 
 	modules: {
-
+		authNav
 	}
 })

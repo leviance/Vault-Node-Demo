@@ -3,7 +3,7 @@ import axios from "axios";
 import {notification} from "ant-design-vue";
 
 const goPathRequireAuth = (to, from, next) => {
-    store.commit("show_loading");
+    store.commit("showLoading");
 
     let timeoutID = setTimeout(() => {
         notification.error({
@@ -20,13 +20,18 @@ const goPathRequireAuth = (to, from, next) => {
             next({name: "Auth"});
         })
         .finally(() => {
-            store.commit("hide_loading");
+            store.commit("hideLoading");
             clearTimeout(timeoutID);
         })
 }
 
 const goPathNotRequierAuth = (to, from, next) => {
-    store.commit("show_loading");
+    /**
+     * reset all state to default
+     */
+    store.commit("resetState");
+
+    store.commit("showLoading");
 
     let timeoutID = setTimeout(() => {
         notification.error({
@@ -43,7 +48,7 @@ const goPathNotRequierAuth = (to, from, next) => {
             next({name: "Home"});
         })
         .finally(() => {
-            store.commit("hide_loading");
+            store.commit("hideLoading");
             clearTimeout(timeoutID);
         })
 }

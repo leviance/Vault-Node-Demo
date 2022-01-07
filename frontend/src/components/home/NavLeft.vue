@@ -72,16 +72,27 @@
             <!-- end authenticate -->
 
 
+            <!-- policies -->
+            <a-sub-menu key="policies">
+                <template #icon>
+                    <AuditOutlined />
+                </template>
+                <template #title>Policies</template>
+                <a-menu-item key="add-policies">Add Policies</a-menu-item>
+                <a-menu-item key="view-policies">View Policies</a-menu-item>
+                <a-menu-item key="remove-policies">Remove Policies</a-menu-item>
+            </a-sub-menu>
+            <!-- end policies -->
+
+
             <!-- secret -->
             <a-sub-menu key="secret">
                 <template #icon>
                     <KeyOutlined />
                 </template>
-                <template #title>Secret Managerment</template>
-                <a-menu-item key="5">Enabled Approle</a-menu-item>
-                <a-menu-item key="6">Option 6</a-menu-item>
-                <a-menu-item key="7">Option 7</a-menu-item>
-                <a-menu-item key="8">Option 8</a-menu-item>
+                <template #title>Secret</template>
+                <a-menu-item key="enable-secret">Enabled Secret</a-menu-item>
+                <a-menu-item key="list-secret">Secrets Engines</a-menu-item>
             </a-sub-menu>
             <!-- end secret -->
 
@@ -122,7 +133,7 @@
 import axios from "axios";
 import { defineComponent, reactive, toRefs, watch } from "vue";
 import {notification} from "ant-design-vue";
-import { MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined, DatabaseOutlined, KeyOutlined, TeamOutlined, TrademarkCircleOutlined, SafetyCertificateOutlined, FileProtectOutlined } from '@ant-design/icons-vue';
+import { MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined, DatabaseOutlined, KeyOutlined, TeamOutlined, TrademarkCircleOutlined, SafetyCertificateOutlined, FileProtectOutlined, AuditOutlined } from '@ant-design/icons-vue';
 
 export default defineComponent({
     components: {
@@ -134,7 +145,8 @@ export default defineComponent({
         TeamOutlined,
         TrademarkCircleOutlined,
         SafetyCertificateOutlined,
-        FileProtectOutlined
+        FileProtectOutlined,
+        AuditOutlined
     },
 
     setup() {
@@ -201,6 +213,14 @@ export default defineComponent({
 
             axios.post(`${process.env.VUE_APP_ROOT_API}/enable-approle`, {path})
                 .then(res => {
+                    /**
+                     * if Lis Auth Methos is showing -> update List Auth Method
+                     */
+                    if(this.$store.state.authNav.listAuthMethods !== null && this.$store.state.authNav.listAuthMethods.constructor.name === "Object")
+                    {
+                        this.getAuthMethods();
+                    }
+
                     this.$store.dispatch("handleRequestSuccess", res);
                 })
                 .catch(err => {
@@ -214,9 +234,10 @@ export default defineComponent({
         getAuthMethods() {
             axios.get(`${process.env.VUE_APP_ROOT_API}/auth-methods`)
                 .then(res => {
-                    console.log(res);
+                    this.$store.dispatch("setData", {targetStore: "listAuthMethods", data: res.data}).authNav;
                 })
                 .catch(err => { 
+                    console.log(err);
                     this.$store.dispatch("handleRequestError", err);
                 })
         },

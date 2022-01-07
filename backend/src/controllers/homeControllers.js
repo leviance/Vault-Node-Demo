@@ -42,14 +42,52 @@ class HomeController {
 
         } catch (error) {
             let message = serverError.unknow_error;
+            let status = error.status || 400;
 
             if(error.status === 403) message = clientError.permissionDenied;
             if(error.status === 404) message = clientError.bad_request;
 
-            return res.status(400).send(message);
+            return res.status(status).send(message);
         }
     }
 
+    async deleteAuthMethod(req, res) {
+
+        const path = req.params.path;
+
+        try {
+            
+            const {token} = req.session.userData;
+            
+            await vault.disableAuthMethod(token, path);
+
+            return res.status(204).send();
+
+        } catch (error) {
+            let message = serverError.unknow_error;
+            let status = error.status || 400;
+
+            if(error.status === 400) message = clientError.authMethodCantDisable(path);
+            if(error.status === 403) message = clientError.permissionDenied;
+            if(error.status === 404) message = clientError.bad_request;
+
+            return res.status(status).send(message);
+        }
+    }
+
+    async testCreateSecret(req, res) {
+
+        try {
+            const resultCreateSecret = await vault.updateSecret("root", "database/data/backend");
+
+            console.log(resultCreateSecret);
+
+            return res.status(200).send();
+        } catch (error) {
+            console.log(error);
+            return res.status(500).send();
+        }
+    }
 }
 
 module.exports = new HomeController;
